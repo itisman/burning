@@ -1,0 +1,20 @@
+extends ../layout
+block content
+    .container
+        .row
+            form.form-horizontal(method='post', action='/admin/movie/new')
+                .form-group
+                    label.col-sm-3.control-label(for='inputTitle') Movie Name
+                    .col-sm-10
+                        input#inputTitle.form-control(type='text', name='movie[title]')
+                .form-group
+                    label.col-sm-3.control-label(for='inputDirector') Movie Name
+                    .col-sm-10
+                        input#inputDirector.form-control(type='text', name='movie[director]')
+                .form-group
+                    label.col-sm-3.control-label(for='inputCountry') Movie Name
+                    .col-sm-10
+                        input#inputCountry.form-control(type='text', name='movie[country]')
+                .form-group
+                    .col-sm-offset-2.col-sm-10
+                    button.btn.btn-default(type="submit")录入

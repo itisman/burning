@@ -1,0 +1,18 @@
+{
+  "name": "movie",
+  "version": "1.0.0",
+  "description": "it's a nodejs project sample",
+  "main": "app.js",
+  "dependencies": {
+    "express": "*",
+    "mongoose": "*",
+	"jade": "*",
+	"moment": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "gaopeng chen",
+  "license": "ISC"
+}
