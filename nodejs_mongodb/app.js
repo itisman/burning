@@ -8,7 +8,7 @@ var port = process.env.PORT || 3000;
 var app = express();
 
 var mongoURI = "mongodb://localhost:3000";
-var MongoDB = mongoose.connect(mongoURI).connection;
+mongoose.connect(mongoURI);
 //MongoDB.on('error', function(err) { console.log(err.message); });
 //MongoDB.once('open', function() {
 //  console.log("mongodb connection open");
@@ -23,7 +23,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-app.use(express['static'](path.join(__dirname, 'bower_components')));
+app.use(express['static'](path.join(__dirname, 'public')));
+app.locals.moment = require('moment');
 app.listen(port);
 
 console.log('server started on port' + port);
@@ -34,6 +35,7 @@ app.get('/', function(req, res) {
     Movie.fetch(function(err, movies){
         if(err){
             console.log(err);
+            return;
         }
         console.log(movies);
         res.render('index', {
@@ -55,13 +57,13 @@ app.get('/', function(req, res) {
 
 // detail page
 app.get('/movie/:id', function(req, res) {
-    debugger;
     var id = req.params.id;
+    console.log(id);
     Movie.findById(id, function(err, movie){
-        debugger;
         console.log(movie);
         if(err){
             console.log(err);
+            return;
         }
         res.render('detail', {
             title: 'detail page',
@@ -84,8 +86,6 @@ app.get('/movie/:id', function(req, res) {
 
 // admin page
 app.get('/admin/movie', function(req, res) {
-    debugger;
-    console.log();
     res.render('admin', {
         title: 'admin page',
         movie: {
@@ -102,12 +102,12 @@ app.get('/admin/movie', function(req, res) {
 
 // admin update movie
 
-app.post('/admin/update/:id', function(req, res){
-    debugger;
-    console.log();
+app.get('/admin/update/:id', function(req, res){
     var id = req.params.id;
+    console.log(id);
     if(id){
         Movie.findById(id, function(err, movie){
+            console.log(movie);
             res.render('admin', {
                 title: 'imooc update page', 
                 movie: movie
@@ -118,23 +118,23 @@ app.post('/admin/update/:id', function(req, res){
 });
 // admin post movie
 app.post('/admin/movie/new', function(req, res){
-    debugger;
-    console.log();
     var id = req.body.movie.id;
+    console.log(id);
     var movieObj = req.body.movie;
     var _movie;
     if(id !== undefined && id !== 'undefined'){
         Movie.findById(id, function(err, movie){
             if(err){
                 console.log(err);
+                return;
             }
             
             _movie = _.extend(movie, movieObj);
-            debugger;
             console.log(_movie);
             _movie.save(function(err, movie){
                 if(err){
                     console.log(err);
+                    return;
                 }
 
                 res.redirect('/movie/' + movie.id);
@@ -145,18 +145,17 @@ app.post('/admin/movie/new', function(req, res){
             director: movieObj.director,
             title: movieObj.title,
             country: movieObj.country,
-            language: movieObj.language,
+            lan: movieObj.lan,
             year: movieObj.year,
-            poster: movieObj.poster,
-            summary: movieObj.summary,
-            flash: movieObj.flash
+            desc: movieObj.desc
         }); 
 
-        debugger;
-        console.log();
-        _movie.save(function(err, movie){
+        console.log(_movie);
+        _movie.save(function(err){
+            console.log(err);
             if(err){
                 console.log(err);
+                return;
             }
 
             res.redirect('/movie/' + _movie.id);
@@ -169,6 +168,7 @@ app.get('/admin/list', function(req, res) {
     Movie.fetch(function(err, movies){
         if(err){
             console.log(err);
+            return;
         }
         res.render('list', {
             title: 'list page',
@@ -197,4 +197,20 @@ app.get('/admin/list', function(req, res) {
     //    }]
 
     //});
+});
+
+//list delete movie
+app.delete('/admin/list', function(req, res){
+    debugger;
+    var id = req.query.id;
+    console.log(id);
+    if(id){
+        Movie.remove({_id: id}, function(err){
+            if(err){
+                console.log(err);
+                return;
+            }
+            res.json({success: 1});
+        });
+    }
 });
