@@ -2,6 +2,9 @@
 - imooc: 
     - http://www.imooc.com/learn/75
     - http://www.imooc.com/learn/348
+- mongodb install:
+	- https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/
+	- https://docs.mongodb.org/manual/reference/configuration-options/
 - source code:
     - http://www.imlwj.com/blog/?p=55
 - demo code: 
@@ -50,10 +53,13 @@
 	- bower install bootstrap
 	- npm install mongoose express jade moment
 - [Install Mongo on windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/)
-- `mongo --port 3000` to start mongo operation
+    - `mongod --port 3000` to start a mongodb server
+    - `mongo --port 3000` to start mongo operation
+        - db.getCollectionNames();
+        - db.movies.find({});
 - Install node-inspector by npm install node-inspector
     - Require .net framework 2.0 and python
-    - Start Running by debug mode: **node-debug app.js**
+    - Start Running by debug mode: **node-debug app.js**, debug page will be open automatically.
 
 
 
